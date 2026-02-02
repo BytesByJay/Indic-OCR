@@ -1,0 +1,109 @@
+# Indic-OCR Configuration File
+# Multi-Language OCR System for Indian Regional Scripts
+
+# Project Information
+project:
+  name: "Indic-OCR"
+  version: "1.0.0"
+  author: "Dhananjayan H"
+  roll_no: "AA.SC.P2MCA24070151"
+
+# Supported Languages/Scripts
+languages:
+  - name: "Hindi"
+    script: "Devanagari"
+    code: "hi"
+    unicode_range: "0900-097F"
+  - name: "Malayalam"
+    script: "Malayalam"
+    code: "ml"
+    unicode_range: "0D00-0D7F"
+  - name: "Tamil"
+    script: "Tamil"
+    code: "ta"
+    unicode_range: "0B80-0BFF"
+
+# Image Preprocessing Settings
+preprocessing:
+  target_height: 64
+  target_width: 256
+  grayscale: true
+  denoise: true
+  deskew: true
+  binarization:
+    method: "adaptive"  # options: otsu, adaptive, sauvola
+    block_size: 11
+    constant: 2
+  resize_method: "bilinear"
+
+# Script Identification Model
+script_classifier:
+  model_type: "cnn"  # options: cnn, resnet, efficientnet
+  input_size: [224, 224]
+  num_classes: 3  # Initially supporting 3 scripts
+  batch_size: 32
+  epochs: 50
+  learning_rate: 0.001
+  dropout: 0.5
+  pretrained: true
+
+# OCR Model Settings
+ocr:
+  engine: "paddleocr"  # options: paddleocr, trocr, tesseract
+  use_gpu: true
+  detection:
+    det_algorithm: "DB"
+    det_limit_side_len: 960
+    det_db_thresh: 0.3
+  recognition:
+    rec_algorithm: "CRNN"
+    rec_batch_num: 6
+    max_text_length: 100
+
+# Training Settings
+training:
+  train_split: 0.8
+  val_split: 0.1
+  test_split: 0.1
+  random_seed: 42
+  early_stopping_patience: 10
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+
+# Data Augmentation
+augmentation:
+  enabled: true
+  rotation_range: 5
+  width_shift_range: 0.1
+  height_shift_range: 0.1
+  zoom_range: 0.1
+  noise_factor: 0.02
+
+# Evaluation Metrics
+evaluation:
+  metrics:
+    - "cer"  # Character Error Rate
+    - "wer"  # Word Error Rate
+    - "accuracy"
+  save_predictions: true
+
+# Web Interface Settings
+webapp:
+  host: "0.0.0.0"
+  port: 8501
+  max_upload_size_mb: 10
+  allowed_extensions:
+    - "jpg"
+    - "jpeg"
+    - "png"
+    - "bmp"
+    - "tiff"
+
+# Paths
+paths:
+  data_dir: "data"
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  models_dir: "models"
+  outputs_dir: "outputs"
+  logs_dir: "logs"
