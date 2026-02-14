@@ -341,6 +341,8 @@ class ScriptClassifier:
                 logger.info(f"Epoch {epoch+1}/{epochs} - "
                            f"Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.2f}%")
         
+        # Always save the final model at the end of training
+        self.save_model(save_path)
         return history
     
     def evaluate(self, data_loader: DataLoader, criterion=None) -> Tuple[float, float]:
